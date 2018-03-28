@@ -101,9 +101,24 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
-    
+    var answer = [];
+    var iteratorArr = [];
+    if(!isSorted) {
+      _.each(array, function(element) {
+        if(_.indexOf(answer, element) === -1) {
+          answer.push(element);
+        } 
+      });
+    } else {
+      _.each(array, function(element, index) {
+          if(_.indexOf(iteratorArr, iterator(element)) === -1) {
+            iteratorArr.push(iterator(element));
+            answer.push(element);
+          }
+      })
+    }
+     return answer;
   };
-
 
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
@@ -180,7 +195,16 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
+     var answer = false
+     _.reduce(collection, function(test, element) {
+      test = iterator;
+      if(!test(element)) {
+        answer === false;
+      } else {
+        answer = true;
+      }
+    }, false);
+    return answer;// TIP: Try re-using reduce() here.
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -209,6 +233,7 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    
   };
 
   // Like extend, but doesn't ever overwrite a key that already
